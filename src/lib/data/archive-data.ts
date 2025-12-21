@@ -23,12 +23,212 @@ export const galleryData: GalleryItemData[] = [
 		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
 		title: 'PEAK',
 		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
+	},
+	{
+		id: 'kyoto',
+		src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+		title: 'KYOTO',
+		desc: 'Street documentation, evening.'
+	},
+	{
+		id: 'forest',
+		src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+		title: 'FOREST',
+		desc: 'Observation, static.'
+	},
+	{
+		id: 'peak',
+		src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800',
+		title: 'PEAK',
+		desc: 'Altitude study.'
 	}
 ];
 
 export interface ArchiveItem {
 	id: string;
-	title: string;
+	title?: string;
+	semesterTitle?: string;
+	semesterDate?: string;
 	children?: ArchiveItem[];
 	description?: string;
 	documentation?: DocumentationItem[];
@@ -42,9 +242,9 @@ export interface DocumentationItem {
 
 export const archiveData: ArchiveItem[] = [
 	{
-		id: 'semester-1',
-		title: 'Semester 1 (01/09/2025 - 31/12/2025)',
-		children: [
+			id: 'semester-1',
+			semesterTitle: 'Semester 1',
+			semesterDate: '(01/09/2025 - 31/12/2025)',		children: [
 			{
 				id: 'algoritma-dan-pemrograman',
 				title: 'Algoritma dan Pemrograman',
