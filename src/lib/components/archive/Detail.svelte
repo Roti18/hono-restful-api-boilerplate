@@ -23,7 +23,13 @@
 			<h1
 				class="mb-6 text-[2.6rem] leading-[1.15] font-thin tracking-[0.18em] text-white max-md:mb-4 max-md:text-2xl max-md:leading-[1.2] max-md:tracking-[0.12em]"
 			>
-				{$selectedDetail.title}
+				{#if $selectedDetail.semesterTitle}
+					{$selectedDetail.semesterTitle}
+					<br />
+					<span class="text-gray-400 max-md:text-base">{$selectedDetail.semesterDate}</span>
+				{:else}
+					{$selectedDetail.title}
+				{/if}
 			</h1>
 
 			<div
