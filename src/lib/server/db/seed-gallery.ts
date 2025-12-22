@@ -30,35 +30,40 @@ async function seedGalleryExtra() {
 
 	const items = [
 		// === GROUP A (10 items)
-		{ groupId: groupA.id, title: 'Wireframe Wall', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Early Layout Study', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Spacing Exploration', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Component Breakdown', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Prototype Review', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Interaction Mapping', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Dark UI Test', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Iteration Notes', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Visual Rhythm', yearTaken: 2024 },
-		{ groupId: groupA.id, title: 'Final Polish', yearTaken: 2024 },
+		{ groupId: groupA.id, title: 'Wireframe Wall' },
+		{ groupId: groupA.id, title: 'Early Layout Study' },
+		{ groupId: groupA.id, title: 'Spacing Exploration' },
+		{ groupId: groupA.id, title: 'Component Breakdown' },
+		{ groupId: groupA.id, title: 'Prototype Review' },
+		{ groupId: groupA.id, title: 'Interaction Mapping' },
+		{ groupId: groupA.id, title: 'Dark UI Test' },
+		{ groupId: groupA.id, title: 'Iteration Notes' },
+		{ groupId: groupA.id, title: 'Visual Rhythm' },
+		{ groupId: groupA.id, title: 'Final Polish' },
 
 		// === GROUP B (9 items)
-		{ groupId: groupB.id, title: 'Morning Class', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Hallway Light', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Study Corner', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Late Afternoon', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Discussion Break', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Empty Classroom', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Library Silence', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Sunset Corridor', yearTaken: 2023 },
-		{ groupId: groupB.id, title: 'Last Lecture', yearTaken: 2023 }
+		{ groupId: groupB.id, title: 'Morning Class' },
+		{ groupId: groupB.id, title: 'Hallway Light' },
+		{ groupId: groupB.id, title: 'Study Corner' },
+		{ groupId: groupB.id, title: 'Late Afternoon' },
+		{ groupId: groupB.id, title: 'Discussion Break' },
+		{ groupId: groupB.id, title: 'Empty Classroom' },
+		{ groupId: groupB.id, title: 'Library Silence' },
+		{ groupId: groupB.id, title: 'Sunset Corridor' },
+		{ groupId: groupB.id, title: 'Last Lecture' }
 	];
 
 	await db.insert(galleryItem).values(
-		items.map((item, i) => ({
-			...item,
-			description: `Documentation — ${item.title}`,
-			imageUrl: `https://picsum.photos/seed/gallery-${i + 20}/800/800`
-		}))
+		items.map((item, i) => {
+			const date = new Date();
+			date.setDate(date.getDate() - Math.floor(Math.random() * 365));
+			return {
+				...item,
+				description: `Documentation — ${item.title}`,
+				imageUrl: `https://picsum.photos/seed/gallery-${i + 20}/800/800`,
+				date: date.toISOString().split('T')[0]
+			};
+		})
 	);
 
 	console.log('✅ Extra gallery seed complete');

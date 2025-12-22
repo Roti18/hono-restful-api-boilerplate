@@ -6,12 +6,11 @@
 	import Gallery from '$lib/components/archive/Gallery.svelte';
 	import PhotoModal from '$lib/components/archive/PhotoModal.svelte';
 	import { currentPage, initializeArchive } from '$lib/stores/archive-navigation';
-	import type { GalleryGroup } from '$lib/types/gallery';
+	import type { GalleryGroupWithItems } from '$lib/types/gallery';
 	import type { ArchiveItem } from '$lib/types/archive';
 
-	// sementara: gallery data dari load()
 	export let data: {
-		gallery: GalleryGroup[];
+		gallery: GalleryGroupWithItems[];
 		archive: ArchiveItem[];
 	};
 

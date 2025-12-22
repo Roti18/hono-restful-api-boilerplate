@@ -50,7 +50,6 @@
 							</div>
 						{/if}
 
-						<!-- New Dosen, Jam, & Asprak Display -->
 						<div class="mt-2 flex flex-col gap-1 text-sm text-gray-400">
 							<div class="flex flex-wrap items-center gap-x-4">
 								{#if item.dosen}

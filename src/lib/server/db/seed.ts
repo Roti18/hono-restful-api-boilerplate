@@ -15,13 +15,21 @@ import {
 	galleryItem
 } from './schema';
 import type { InferSelectModel } from 'drizzle-orm';
+import { hash } from '@node-rs/argon2';
 
 async function seedUsers() {
 	console.log('  Seeding users...');
+	const passwordHash = await hash('password', {
+		memoryCost: 19456,
+		timeCost: 2,
+		outputLen: 32,
+		parallelism: 1
+	});
 	await db.insert(user).values({
 		id: 'admin',
 		username: 'roti18',
-		passwordHash: 'hashed-password'
+		passwordHash: passwordHash,
+		email: 'admin@local.host'
 	});
 }
 

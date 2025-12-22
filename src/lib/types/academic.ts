@@ -17,7 +17,6 @@ import {
 export type AcademicItemBlock = InferSelectModel<typeof academicItemBlock>;
 export type PraktikumItemBlock = InferSelectModel<typeof praktikumItemBlock>;
 
-
 /* =========================
    ITEM
 ========================= */

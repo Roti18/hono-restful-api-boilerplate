@@ -4,7 +4,7 @@
 		selectedDetail,
 		goBack,
 		navigationPath,
-		openPhoto // Added openPhoto import
+		openPhoto
 	} from '$lib/stores/archive-navigation';
 	import { fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
