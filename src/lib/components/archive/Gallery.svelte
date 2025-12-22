@@ -3,9 +3,9 @@
 	import { fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
-	import type { GalleryGroup } from '$lib/types/gallery';
+	import type { GalleryGroupWithItems } from '$lib/types/gallery';
 
-	export let groups: GalleryGroup[];
+	export let groups: GalleryGroupWithItems[];
 </script>
 
 <div in:fade={{ duration: 600, easing: quintOut }} class="space-y-16">
