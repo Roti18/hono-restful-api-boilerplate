@@ -1,9 +1,12 @@
-import { getGalleryGroupsWithItems } from '$lib/server/services/gallery.service';
+import {
+	getGalleryGroupsWithItems,
+	getUncategorizedGalleryItems
+} from '$lib/server/services/gallery.service';
 import { getArchiveTree } from '$lib/server/services/archive.service';
 
 export async function load() {
 	const gallery = await getGalleryGroupsWithItems();
+	const uncategorizedItems = await getUncategorizedGalleryItems();
 	const archive = await getArchiveTree();
-	return { gallery, archive };
+	return { gallery, uncategorizedItems, archive };
 }
-
