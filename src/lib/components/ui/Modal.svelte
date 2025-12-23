@@ -24,6 +24,7 @@
 		on:click={handleBackdropClick}
 		on:keydown={handleKeydown}
 		role="dialog"
+		tabindex="-1"
 		aria-modal="true"
 		aria-labelledby="modal-title"
 	>

@@ -16,7 +16,7 @@
 
 	$: displayIconComponent = (() => {
 		if (!$selectedDetail) return ExternalLink;
-		const platform = $selectedDetail.linkPlatform;
+		const platform = $selectedDetail.links?.[0]?.platform;
 		if (!platform) return ExternalLink;
 		switch (platform) {
 			case 'gdrive':
@@ -32,7 +32,7 @@
 
 	$: formattedPlatformName = (() => {
 		if (!$selectedDetail) return '';
-		const platform = $selectedDetail.linkPlatform;
+		const platform = $selectedDetail.links?.[0]?.platform;
 		if (!platform) return '';
 		switch (platform) {
 			case 'gdrive':
@@ -108,21 +108,22 @@
 			{/each}
 		{/if}
 
-		{#if $selectedDetail!.link}
+		{#if $selectedDetail!.links && $selectedDetail!.links.length > 0}
 			<div class="mb-24 max-md:mb-16">
-				<div class="mb-12 text-[0.65rem] tracking-[0.32em] text-gray-500 max-md:mb-8">LINK</div>
-				<a
-					href={$selectedDetail!.link!}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="inline-flex items-center gap-2 text-sm text-blue-400 transition-colors duration-200 hover:text-blue-300"
-				>
-					<svelte:component this={displayIconComponent} size={16} />
-					<span>
-						{formattedPlatformName ? formattedPlatformName + ' - ' : ''}
-						{$selectedDetail!.link!}
-					</span>
-				</a>
+				<div class="mb-12 text-[0.65rem] tracking-[0.32em] text-gray-500 max-md:mb-8">LINKS</div>
+				{#each $selectedDetail!.links as link}
+					<a
+						href={link.url}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="mb-2 inline-flex items-center gap-2 text-sm text-blue-400 transition-colors duration-200 hover:text-blue-300"
+					>
+						<svelte:component this={displayIconComponent} size={16} />
+						<span>
+							{link.title || 'Link'} - {link.url}
+						</span>
+					</a>
+				{/each}
 			</div>
 		{/if}
 

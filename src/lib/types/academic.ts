@@ -4,18 +4,23 @@ import {
 	mataKuliah,
 	academicItem,
 	academicItemBlock,
+	academicItemLink,
 	praktikum,
 	praktikumItem,
 	praktikumItemBlock,
+	praktikumItemLink,
 	asprak
 } from '$lib/server/db/schema';
 
 /* =========================
-   BLOCK
+   BLOCK & LINK
 ========================= */
 
 export type AcademicItemBlock = InferSelectModel<typeof academicItemBlock>;
+export type AcademicItemLink = InferSelectModel<typeof academicItemLink>;
+
 export type PraktikumItemBlock = InferSelectModel<typeof praktikumItemBlock>;
+export type PraktikumItemLink = InferSelectModel<typeof praktikumItemLink>;
 
 /* =========================
    ITEM
@@ -23,10 +28,12 @@ export type PraktikumItemBlock = InferSelectModel<typeof praktikumItemBlock>;
 
 export type AcademicItem = InferSelectModel<typeof academicItem> & {
 	blocks: AcademicItemBlock[];
+	links: AcademicItemLink[];
 };
 
 export type PraktikumItem = InferSelectModel<typeof praktikumItem> & {
 	blocks: PraktikumItemBlock[];
+	links: PraktikumItemLink[];
 };
 
 /* =========================

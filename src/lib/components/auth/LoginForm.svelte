@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Users, Lock } from '@lucide/svelte';
-	
+
 	let username = '';
 	let password = '';
 
