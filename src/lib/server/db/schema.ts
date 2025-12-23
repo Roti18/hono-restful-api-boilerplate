@@ -60,7 +60,7 @@ export const mataKuliahRelations = relations(mataKuliah, ({ one, many }) => ({
 	}),
 	academicItems: many(academicItem),
 	praktikums: many(praktikum),
-	aspraks: many(asprak) // Added
+	aspraks: many(asprak)
 }));
 
 /* =========================
@@ -74,13 +74,13 @@ export const academicItem = sqliteTable('academic_item', {
 		.references(() => mataKuliah.id, { onDelete: 'cascade' }),
 
 	type: text('type').notNull(),
-	// 'tugas' | 'uts' | 'uas' | 'materi' | 'tugas_akhir'
+	// Types: 'tugas' | 'materi' | 'uas' | 'uts' | 'tugas_akhir'
 
 	title: text('title').notNull(),
-	heroImage: text('hero_image'),
-
-	link: text('link'),
-	linkPlatform: text('link_platform') // gdrive | figma | pdf | dll
+	heroImageWebpUrl: text('hero_image_webp_url'),
+	heroImageOriginalUrl: text('hero_image_original_url'),
+	heroImageFileId: text('hero_image_file_id'),
+	heroImageGoogleId: text('hero_image_google_id')
 });
 
 export const academicItemRelations = relations(academicItem, ({ one, many }) => ({
@@ -88,11 +88,31 @@ export const academicItemRelations = relations(academicItem, ({ one, many }) => 
 		fields: [academicItem.mataKuliahId],
 		references: [mataKuliah.id]
 	}),
-	blocks: many(academicItemBlock)
+	blocks: many(academicItemBlock),
+	links: many(academicItemLink)
+}));
+
+export const academicItemLink = sqliteTable('academic_item_link', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	itemId: integer('item_id')
+		.notNull()
+		.references(() => academicItem.id, { onDelete: 'cascade' }),
+	title: text('title').notNull(),
+	url: text('url').notNull(),
+	platform: text('platform'), // optional platform hint/icon
+	order: integer('order').notNull().default(0)
+});
+
+export const academicItemLinkRelations = relations(academicItemLink, ({ one }) => ({
+	item: one(academicItem, {
+		fields: [academicItemLink.itemId],
+		references: [academicItem.id]
+	})
 }));
 
 /* =========================
    CONTENT BLOCK (TEXT + IMAGE HIGHLIGHT)
+   Flexible content: Text paragraphs, Images, Code blocks, etc.
 ========================= */
 
 export const academicItemBlock = sqliteTable('academic_item_block', {
@@ -102,11 +122,16 @@ export const academicItemBlock = sqliteTable('academic_item_block', {
 		.references(() => academicItem.id, { onDelete: 'cascade' }),
 
 	type: text('type').notNull(),
-	// 'text' | 'image'
+	// 'text' | 'image' | 'header'
 
-	content: text('content'), // untuk text
-	imageUrl: text('image_url'), // untuk image
+	content: text('content'), // html/markdown text
+	imageWebpUrl: text('image_webp_url'),
+	imageOriginalUrl: text('image_original_url'),
+	imageFileId: text('image_file_id'), // ImageKit ID
+	imageGoogleId: text('image_google_id'), // Drive ID
+
 	caption: text('caption'),
+	width: text('width'), // 'full' | 'half' - for layouting hints
 
 	order: integer('order').notNull()
 });
@@ -125,10 +150,10 @@ export const academicItemBlockRelations = relations(academicItemBlock, ({ one })
 export const praktikum = sqliteTable('praktikum', {
 	id: integer('id').primaryKey({ autoIncrement: true }),
 	mataKuliahId: integer('mata_kuliah_id')
-		.notNull()
-		.references(() => mataKuliah.id, { onDelete: 'cascade' }),
-
-	title: text('title').notNull()
+		.references(() => mataKuliah.id, { onDelete: 'cascade' })
+		.notNull(),
+	title: text('title').notNull(),
+	asprak: text('asprak') // Added asprak column
 });
 
 export const praktikumRelations = relations(praktikum, ({ one, many }) => ({
@@ -150,11 +175,13 @@ export const praktikumItem = sqliteTable('praktikum_item', {
 		.references(() => praktikum.id, { onDelete: 'cascade' }),
 
 	type: text('type').notNull(),
-	// 'pra_praktikum' | 'tugas_praktikum' | 'asistensi' | 'ta_praktikum'
+	// Types: 'tugas_praktikum' | 'tugas_pra_praktikum' | 'uas_praktikum' | 'uts_praktikum' | 'tugas_akhir' | 'materi'
 
 	title: text('title').notNull(),
-	link: text('link'),
-	linkPlatform: text('link_platform')
+	heroImageWebpUrl: text('hero_image_webp_url'),
+	heroImageOriginalUrl: text('hero_image_original_url'),
+	heroImageFileId: text('hero_image_file_id'),
+	heroImageGoogleId: text('hero_image_google_id')
 });
 
 export const praktikumItemRelations = relations(praktikumItem, ({ one, many }) => ({
@@ -162,7 +189,26 @@ export const praktikumItemRelations = relations(praktikumItem, ({ one, many }) =
 		fields: [praktikumItem.praktikumId],
 		references: [praktikum.id]
 	}),
-	blocks: many(praktikumItemBlock)
+	blocks: many(praktikumItemBlock),
+	links: many(praktikumItemLink)
+}));
+
+export const praktikumItemLink = sqliteTable('praktikum_item_link', {
+	id: integer('id').primaryKey({ autoIncrement: true }),
+	itemId: integer('item_id')
+		.notNull()
+		.references(() => praktikumItem.id, { onDelete: 'cascade' }),
+	title: text('title').notNull(),
+	url: text('url').notNull(),
+	platform: text('platform'),
+	order: integer('order').notNull().default(0)
+});
+
+export const praktikumItemLinkRelations = relations(praktikumItemLink, ({ one }) => ({
+	item: one(praktikumItem, {
+		fields: [praktikumItemLink.itemId],
+		references: [praktikumItem.id]
+	})
 }));
 
 /* =========================
@@ -178,9 +224,14 @@ export const praktikumItemBlock = sqliteTable('praktikum_item_block', {
 	type: text('type').notNull(),
 	// 'text' | 'image'
 
-	content: text('content'), // untuk text
-	imageUrl: text('image_url'), // untuk image
+	content: text('content'),
+	imageWebpUrl: text('image_webp_url'),
+	imageOriginalUrl: text('image_original_url'),
+	imageFileId: text('image_file_id'),
+	imageGoogleId: text('image_google_id'),
+
 	caption: text('caption'),
+	width: text('width'), // 'full' | 'half'
 
 	order: integer('order').notNull()
 });
@@ -232,8 +283,16 @@ export const galleryItem = sqliteTable('gallery_item', {
 
 	title: text('title').notNull(),
 	description: text('description'),
-	imageUrl: text('image_url').notNull(),
-	date: text('date').notNull() // Replaced yearTaken with date
+
+	// Changed from simple imageUrl to detailed storage
+	imageWebpUrl: text('image_webp_url').notNull(),
+	imageOriginalUrl: text('image_original_url').notNull(),
+	imagekitFileId: text('imagekit_file_id'), // Nullable for backwards compatibility or manual insertion
+	googleDriveFileId: text('google_drive_file_id'),
+
+	date: text('date').notNull(),
+	createdAt: integer('created_at', { mode: 'timestamp' }).$defaultFn(() => new Date()),
+	updatedAt: integer('updated_at', { mode: 'timestamp' }).$defaultFn(() => new Date())
 });
 
 export const galleryGroupRelations = relations(galleryGroup, ({ many }) => ({
