@@ -4,8 +4,9 @@
 	import { Search, Menu, X } from '@lucide/svelte';
 	import type { User } from '$lib/types/user';
 
-	export let user: User;
+	// No user prop needed currently
 	export let mobileMenuOpen: boolean = false;
+	export let user: User | undefined = undefined;
 
 	let searchQuery: string = '';
 	let searchFocused: boolean = false;
@@ -27,7 +28,7 @@
 	<div class="flex items-center justify-between px-6 py-4">
 		<!-- Mobile menu button -->
 		<button
-			class="text-zinc-400 hover:text-white lg:hidden"
+			class="mr-2 text-zinc-400 hover:text-white lg:hidden"
 			on:click={toggleMenu}
 			aria-label="Toggle menu"
 			type="button"
@@ -59,12 +60,18 @@
 		</form>
 
 		<!-- Desktop User Profile (compact) -->
-		<div class="hidden items-center gap-3 lg:flex">
-			<div
-				class="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-xs font-medium text-white"
-			>
-				{user.username.charAt(0).toUpperCase()}
+		{#if user}
+			<div class="hidden items-center gap-3 lg:flex">
+				<div class="text-right">
+					<p class="text-sm font-medium text-white">{user.username}</p>
+					<p class="text-xs text-zinc-500 capitalize">{user.role}</p>
+				</div>
+				<div
+					class="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-sm font-bold text-white"
+				>
+					{user.username.charAt(0).toUpperCase()}
+				</div>
 			</div>
-		</div>
+		{/if}
 	</div>
 </header>
