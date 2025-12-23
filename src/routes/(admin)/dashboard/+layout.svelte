@@ -4,6 +4,7 @@
 	import Sidebar from '$lib/components/layout/admin/Sidebar.svelte';
 	import Header from '$lib/components/layout/admin/Header.svelte';
 	import MobileNav from '$lib/components/layout/admin/MobileNav.svelte';
+	import Toast from '$lib/components/ui/Toast.svelte';
 
 	export let data;
 
@@ -19,6 +20,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-black text-white">
+	<Toast />
 	<div class="hidden h-screen lg:flex">
 		<Sidebar user={data.user} />
 

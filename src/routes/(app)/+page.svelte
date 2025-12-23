@@ -6,15 +6,32 @@
 	import Gallery from '$lib/components/archive/Gallery.svelte';
 	import PhotoModal from '$lib/components/archive/PhotoModal.svelte';
 	import { currentPage, initializeArchive } from '$lib/stores/archive-navigation';
-	import type { GalleryGroupWithItems } from '$lib/types/gallery';
+	import type { GalleryGroupWithItems, GalleryItem } from '$lib/types/gallery';
 	import type { ArchiveItem } from '$lib/types/archive';
 
 	export let data: {
 		gallery: GalleryGroupWithItems[];
+		uncategorizedItems: GalleryItem[];
 		archive: ArchiveItem[];
 	};
 
 	initializeArchive(data.archive);
+
+	$: displayGroups = [
+		...(data.uncategorizedItems?.length > 0
+			? [
+					{
+						id: -1,
+						title: '',
+						description: null,
+						items: data.uncategorizedItems,
+						createdAt: new Date(),
+						updatedAt: new Date()
+					}
+				]
+			: []),
+		...data.gallery
+	];
 </script>
 
 <svelte:head>
@@ -31,7 +48,7 @@
 		       max-md:p-6 max-md:px-4 max-md:pt-20"
 	>
 		{#if $currentPage === 'gallery'}
-			<Gallery groups={data.gallery} />
+			<Gallery groups={displayGroups} />
 		{:else if $currentPage === 'detail'}
 			<Detail />
 		{:else}

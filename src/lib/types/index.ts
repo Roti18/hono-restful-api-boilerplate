@@ -10,17 +10,10 @@ export type {
 } from './user';
 
 // Gallery types
-export type {
-	GalleryGroup,
-	GalleryGroupWithCount,
-	GalleryItem
-} from './gallery';
+export type { GalleryGroup, GalleryGroupWithCount, GalleryItem } from './gallery';
 
 // Archive types
-export type {
-	ArchiveItem,
-	DocumentationItem
-} from './archive';
+export type { ArchiveItem, DocumentationItem } from './archive';
 
 // Common types
 export type {

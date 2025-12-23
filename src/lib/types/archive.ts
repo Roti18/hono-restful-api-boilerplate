@@ -7,8 +7,7 @@ export interface ArchiveItem {
 	children?: ArchiveItem[];
 	description?: string;
 	documentation?: DocumentationItem[];
-	link?: string;
-	linkPlatform?: string;
+	links?: { title: string; url: string; platform?: string }[];
 	dosen?: string;
 	jam?: string;
 	aspraks?: { name: string }[];

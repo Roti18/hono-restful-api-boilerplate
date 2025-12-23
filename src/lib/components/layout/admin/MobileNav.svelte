@@ -58,7 +58,6 @@
 		<div class="border-b border-zinc-800 p-6">
 			<a href="/" on:click={closeMenu} class="block">
 				<h1 class="text-xl font-bold text-white">CAMPUS LIFE</h1>
-				<p class="mt-1 text-xs text-zinc-500">Dokumentasi perkuliahan</p>
 			</a>
 		</div>
 

@@ -1,45 +1,67 @@
-<!-- src/routes/(admin)/dashboard/gallery/+page.svelte -->
 <script lang="ts">
 	import { Plus, Edit2, Trash2, Image as ImageIcon, Search } from '@lucide/svelte';
-	import Modal from '$lib/components/ui/Modal.svelte';
 	import type { GalleryGroupWithItems, GalleryItem } from '$lib/types/gallery';
 	import type { PageData } from './$types';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
 	let searchQuery: string = '';
-	let showGroupModal: boolean = false;
-	let showItemModal: boolean = false;
-	let selectedGroup: GalleryGroupWithItems | null = null;
-	let selectedItem: GalleryItem | null = null;
 
 	$: galleryGroups = data?.groups || [];
+	$: uncategorizedItems = data?.uncategorizedItems || [];
 
-	function openGroupModal(group: GalleryGroupWithItems | null = null): void {
-		selectedGroup = group ? { ...group } : { id: 0, title: '', description: '', items: [] };
-		showGroupModal = true;
-	}
+	// Combine all items for display
+	$: allItems = [
+		...galleryGroups.flatMap((g: GalleryGroupWithItems) => g.items),
+		...uncategorizedItems
+	];
 
-	function openItemModal(item: GalleryItem | null = null): void {
-		selectedItem = item
-			? { ...item }
-			: { id: 0, title: '', description: '', imageUrl: '', date: '', groupId: null };
-		showItemModal = true;
-	}
-
-	function handleDeleteGroup(groupId: number): void {
-		// TODO: Implement delete logic
-		console.log('Delete group:', groupId);
-	}
-
-	function handleDeleteItem(itemId: number): void {
-		// TODO: Implement delete logic
-		console.log('Delete item:', itemId);
-	}
-
+	// Filter Groups
 	$: filteredGroups = galleryGroups.filter((g: GalleryGroupWithItems) =>
 		g.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);
+
+	// Filter Items (Optional, if we want to search items too)
+	$: filteredItems = allItems.filter((item) =>
+		item.title.toLowerCase().includes(searchQuery.toLowerCase())
+	);
+
+	// Navigation Actions
+	function handleCreateGroup() {
+		goto('/dashboard/gallery/group/create');
+	}
+
+	function handleEditGroup(id: number) {
+		goto(`/dashboard/gallery/group/update/${id}`);
+	}
+
+	function handleDeleteGroup(id: number) {
+		goto(`/dashboard/gallery/group/delete/${id}`);
+	}
+
+	function handleCreateItem() {
+		goto('/dashboard/gallery/item/create');
+	}
+
+	function handleEditItem(item: any) {
+		goto(`/dashboard/gallery/item/update/${item.id}`);
+	}
+
+	function handleDeleteItem(id: number) {
+		goto(`/dashboard/gallery/item/delete/${id}`);
+	}
+
+	// Modal State
+	let selectedItem: any = null;
+
+	function openModal(item: any) {
+		selectedItem = item;
+	}
+
+	function closeModal() {
+		selectedItem = null;
+	}
 </script>
 
 <svelte:head>
@@ -67,7 +89,7 @@
 				/>
 			</div>
 			<button
-				on:click={() => openGroupModal()}
+				on:click={handleCreateGroup}
 				class="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium whitespace-nowrap text-black transition-colors hover:bg-zinc-200"
 				type="button"
 			>
@@ -95,7 +117,7 @@
 							<span class="text-xs text-zinc-600">{group.items.length} items</span>
 							<div class="flex gap-2">
 								<button
-									on:click={() => openGroupModal(group)}
+									on:click={() => handleEditGroup(group.id)}
 									class="p-1 text-zinc-400 transition-colors hover:text-white"
 									type="button"
 									aria-label="Edit group {group.title}"
@@ -123,7 +145,7 @@
 		<div class="mb-4 flex items-center justify-between">
 			<h2 class="text-lg font-semibold text-white">Gallery Items</h2>
 			<button
-				on:click={() => openItemModal()}
+				on:click={handleCreateItem}
 				class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
 				type="button"
 			>
@@ -132,19 +154,27 @@
 			</button>
 		</div>
 		<div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-			{#each galleryGroups.flatMap((g) => g.items) as item (item.id)}
+			{#each filteredItems as item (item.id)}
+				<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
 				<div
-					class="group relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950 hover:border-zinc-700"
+					class="group relative cursor-pointer overflow-hidden rounded-lg border border-zinc-800 bg-zinc-950 hover:border-zinc-700"
+					on:click={() => openModal(item)}
 				>
 					<div class="aspect-square bg-zinc-900">
-						<img src={item.imageUrl} alt={item.title} class="h-full w-full object-cover" />
+						<img
+							src={item.imageWebpUrl || ''}
+							alt={item.title}
+							class="h-full w-full object-cover"
+						/>
 					</div>
+					<!-- Hover Overlay -->
 					<div
-						class="bg-opacity-0 group-hover:bg-opacity-75 absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-all group-hover:opacity-100"
+						class="bg-opacity-0 group-hover:bg-opacity-60 absolute inset-0 flex items-center justify-center bg-black opacity-0 transition-all group-hover:opacity-100"
 					>
-						<div class="flex gap-2">
+						<!-- Actions Container - Stop propagation to check details without editing -->
+						<div class="flex gap-2" on:click|stopPropagation>
 							<button
-								on:click={() => openItemModal(item)}
+								on:click={() => handleEditItem(item)}
 								class="rounded-full bg-white p-2 text-black transition-colors hover:bg-zinc-200"
 								type="button"
 								aria-label="Edit item {item.title}"
@@ -171,108 +201,48 @@
 	</div>
 </div>
 
-<!-- Group Modal -->
-{#if selectedGroup}
-	<Modal
-		bind:show={showGroupModal}
-		title={selectedGroup ? 'Edit Gallery Group' : 'Create Gallery Group'}
-	>
-		<div class="space-y-4">
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Title</label>
-				<input
-					type="text"
-					placeholder="e.g., Semester 3 Moments"
-					bind:value={selectedGroup.title}
-					class="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				/>
-			</div>
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Description</label>
-				<textarea
-					rows={3}
-					placeholder="Describe this gallery group..."
-					bind:value={selectedGroup.description}
-					class="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				></textarea>
-			</div>
-		</div>
-
-		<div slot="footer" class="flex justify-end gap-3">
-			<button
-				on:click={() => (showGroupModal = false)}
-				class="rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-400 transition-colors hover:border-zinc-700 hover:text-white"
-				type="button"
-			>
-				Cancel
-			</button>
-			<button
-				on:click={() => (showGroupModal = false)}
-				class="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-200"
-				type="button"
-			>
-				{selectedGroup ? 'Save Changes' : 'Create Group'}
-			</button>
-		</div>
-	</Modal>
-{/if}
-
-<!-- Item Modal -->
+<!-- Image Modal -->
 {#if selectedItem}
-	<Modal bind:show={showItemModal} title={selectedItem ? 'Edit Item' : 'Add Item'}>
-		<div class="space-y-4">
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Title</label>
-				<input
-					type="text"
-					placeholder="e.g., Class Photo"
-					bind:value={selectedItem.title}
-					class="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				/>
-			</div>
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Description</label>
-				<textarea
-					rows={3}
-					placeholder="Describe this item..."
-					bind:value={selectedItem.description}
-					class="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				></textarea>
-			</div>
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Image URL</label>
-				<input
-					type="text"
-					placeholder="e.g., https://example.com/image.jpg"
-					bind:value={selectedItem.imageUrl}
-					class="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				/>
-			</div>
-			<div>
-				<label class="mb-2 block text-sm font-medium text-zinc-300">Date</label>
-				<input
-					type="date"
-					bind:value={selectedItem.date}
-					class="w-full rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none"
-				/>
-			</div>
-		</div>
+	<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+		on:click={closeModal}
+	>
+		<div
+			class="relative max-h-[90vh] max-w-4xl overflow-hidden rounded-lg bg-zinc-900 shadow-2xl"
+			on:click|stopPropagation
+		>
+			<!-- Close Button -->
+			<button
+				class="absolute top-4 right-4 z-10 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+				on:click={closeModal}
+			>
+				<Trash2 class="h-5 w-5 rotate-45" />
+				<!-- Using Trash2 rotated as close for now, ideally X -->
+			</button>
 
-		<div slot="footer" class="flex justify-end gap-3">
-			<button
-				on:click={() => (showItemModal = false)}
-				class="rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-400 transition-colors hover:border-zinc-700 hover:text-white"
-				type="button"
-			>
-				Cancel
-			</button>
-			<button
-				on:click={() => (showItemModal = false)}
-				class="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-zinc-200"
-				type="button"
-			>
-				{selectedItem ? 'Save Changes' : 'Create Item'}
-			</button>
+			<img
+				src={selectedItem.imageWebpUrl}
+				alt={selectedItem.title}
+				class="max-h-[80vh] w-full object-contain"
+			/>
+
+			<div class="flex items-center justify-between border-t border-zinc-800 bg-zinc-950 p-4">
+				<div>
+					<h3 class="text-lg font-bold text-white">{selectedItem.title}</h3>
+					{#if selectedItem.description}
+						<p class="text-sm text-zinc-400">{selectedItem.description}</p>
+					{/if}
+				</div>
+				<a
+					href={selectedItem.imageOriginalUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+				>
+					View Original
+				</a>
+			</div>
 		</div>
-	</Modal>
+	</div>
 {/if}

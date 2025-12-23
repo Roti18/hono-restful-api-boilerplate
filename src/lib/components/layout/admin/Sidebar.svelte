@@ -1,4 +1,3 @@
-<!-- src/lib/components/layout/admin/Sidebar.svelte -->
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Layers, Users, Clock, Image, BookOpen, LogOut } from '@lucide/svelte';
@@ -15,11 +14,15 @@
 		{ href: '/dashboard/archives', icon: BookOpen, label: 'Archives' }
 	];
 
-	function isActive(href: string): boolean {
-		if (href === '/dashboard') {
-			return $page.url.pathname === '/dashboard';
+	function isActive(href: string, currentPath: string): boolean {
+		const normalizedPath =
+			currentPath.endsWith('/') && currentPath.length > 1 ? currentPath.slice(0, -1) : currentPath;
+		const normalizedHref = href.endsWith('/') && href.length > 1 ? href.slice(0, -1) : href;
+
+		if (normalizedHref === '/dashboard') {
+			return normalizedPath === '/dashboard';
 		}
-		return $page.url.pathname.startsWith(href);
+		return normalizedPath.startsWith(normalizedHref);
 	}
 
 	function handleLogout(): void {
@@ -30,10 +33,9 @@
 
 <aside class="flex w-64 flex-col border-r border-zinc-800 bg-zinc-950">
 	<!-- Logo -->
-	<div class="border-b border-zinc-800 p-6">
+	<div class="border-b border-zinc-800 p-5">
 		<a href="/" class="block">
 			<h1 class="text-xl font-bold text-white">CAMPUS LIFE</h1>
-			<p class="mt-1 text-xs text-zinc-500">Dokumentasi perkuliahan</p>
 		</a>
 	</div>
 
@@ -43,7 +45,8 @@
 			<a
 				href={item.href}
 				class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors {isActive(
-					item.href
+					item.href,
+					$page.url.pathname
 				)
 					? 'bg-white text-black'
 					: 'text-zinc-400 hover:bg-zinc-900 hover:text-white'}"

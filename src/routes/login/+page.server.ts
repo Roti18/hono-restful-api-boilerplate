@@ -9,6 +9,9 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user) {
+		if (event.locals.user.role === 'admin') {
+			return redirect(302, '/dashboard');
+		}
 		return redirect(302, '/');
 	}
 	return {};
@@ -50,6 +53,9 @@ export const actions: Actions = {
 		const session = await auth.createSession(sessionToken, existingUser.id);
 		auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
+		if (existingUser.role === 'admin') {
+			return redirect(302, '/dashboard');
+		}
 		return redirect(302, '/');
 	},
 	register: async (event) => {
