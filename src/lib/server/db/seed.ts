@@ -15,21 +15,16 @@ import {
 	galleryItem
 } from './schema';
 import type { InferSelectModel } from 'drizzle-orm';
-import { hash } from '@node-rs/argon2';
 
 async function seedUsers() {
 	console.log('  Seeding users...');
-	const passwordHash = await hash('password', {
-		memoryCost: 19456,
-		timeCost: 2,
-		outputLen: 32,
-		parallelism: 1
-	});
+	// Note: With Google OAuth, users are created on first login
+	// This seed creates an initial admin user for testing
 	await db.insert(user).values({
 		id: 'admin',
-		username: 'roti18',
-		passwordHash: passwordHash,
-		email: 'admin@local.host'
+		email: 'rotistorage@gmail.com',
+		name: 'Admin',
+		role: 'admin'
 	});
 }
 
@@ -187,7 +182,7 @@ async function seedGallery() {
 	const [group] = await db
 		.insert(galleryGroup)
 		.values({
-			title: 'Campus Life',
+			title: 'ArchiveIn',
 			description: 'Dokumentasi perkuliahan'
 		})
 		.returning();

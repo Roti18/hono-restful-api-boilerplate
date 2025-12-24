@@ -20,7 +20,7 @@ async function seedGalleryExtra() {
 		.insert(galleryGroup)
 		.values({
 			title: 'Campus & Daily',
-			description: 'Daily campus life documentation'
+			description: 'Daily documentation'
 		})
 		.returning();
 
