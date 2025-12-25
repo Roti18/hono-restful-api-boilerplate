@@ -1,0 +1,77 @@
+{
+    "name": "hono-secure-api",
+    "version": "1.0.0",
+    "description": "Security-first, high-performance Hono API boilerplate",
+    "main": "dist/app.js",
+    "types": "dist/app.d.ts",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "tsx watch src/server.ts",
+        "start": "node dist/server.js",
+        "build": "tsc",
+        "lint": "tsc --noEmit",
+        "lint:fix": "tsc --noEmit",
+        "format": "prettier --write \"src/**/*.{ts,js,json}\"",
+        "clean": "rm -rf dist",
+        "db:do": "tsx src/scripts/cli.ts",
+        "db:push": "tsx src/scripts/migrate.ts",
+        "db:seed": "tsx src/scripts/seed.ts",
+        "db:view": "tsx src/scripts/inspect.ts",
+        "db:table:drop": "npm run db:do drop-table",
+        "db:table:clear": "npm run db:do clear-table",
+        "db:table:view": "npm run db:do list-rows",
+        "db:row:list": "npm run db:do list-rows",
+        "db:row:insert": "npm run db:do insert",
+        "db:row:update": "npm run db:do update",
+        "db:row:delete": "npm run db:do delete-row",
+        "db:sql": "npm run db:do query",
+        "deploy": "npm run build && npm start",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "hono",
+        "api",
+        "boilerplate",
+        "security",
+        "typescript",
+        "turso",
+        "imagekit"
+    ],
+    "author": "Your Name <your.email@example.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/username/hono-secure-api.git"
+    },
+    "bugs": {
+        "url": "https://github.com/username/hono-secure-api/issues"
+    },
+    "homepage": "https://github.com/username/hono-secure-api#readme",
+    "dependencies": {
+        "@hono/node-server": "^1.8.0",
+        "@hono/zod-validator": "^0.2.0",
+        "@libsql/client": "^0.5.0",
+        "@types/sharp": "^0.31.1",
+        "dotenv": "^16.4.0",
+        "hono": "^4.0.0",
+        "imagekit": "^5.0.0",
+        "sharp": "^0.34.5",
+        "zod": "^3.22.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/uuid": "^10.0.0",
+        "prettier": "^3.2.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
