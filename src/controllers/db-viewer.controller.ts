@@ -1,28 +1,28 @@
-import { Context } from 'hono'
-import { db } from '../config/database'
+import { Context } from "hono";
+import { db } from "../config/database";
 
 export const dbViewer = async (c: Context) => {
   const tablesResult = await db.execute(
-    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
-  )
-  const tables = tablesResult.rows.map((r) => r.name as string)
+    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'",
+  );
+  const tables = tablesResult.rows.map((r) => r.name as string);
 
-  const selectedTable = c.req.query('table') || tables[0]
-  let rows: any[] = []
-  let columns: string[] = []
-  let error = null
+  const selectedTable = c.req.query("table") || tables[0];
+  let rows: any[] = [];
+  let columns: string[] = [];
+  let error = null;
 
   if (selectedTable && tables.includes(selectedTable)) {
     try {
       const data = await db.execute(
-        `SELECT * FROM ${selectedTable} ORDER BY created_at DESC LIMIT 50`
-      )
-      rows = data.rows
+        `SELECT * FROM ${selectedTable} ORDER BY created_at DESC LIMIT 50`,
+      );
+      rows = data.rows;
       if (rows.length > 0) {
-        columns = Object.keys(rows[0])
+        columns = Object.keys(rows[0]);
       }
     } catch (e: any) {
-      error = e.message
+      error = e.message;
     }
   }
 
@@ -120,15 +120,15 @@ export const dbViewer = async (c: Context) => {
                         <a href="?table=${t}" 
                            class="flex items-center px-3 py-2 text-sm rounded-md transition-all duration-200 group ${
                              t === selectedTable
-                               ? 'bg-blue-50 text-blue-600 border border-blue-200 dark:bg-white/10 dark:text-white dark:border-white/10'
-                               : 'text-gray-600 hover:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-neutral-300'
+                               ? "bg-blue-50 text-blue-600 border border-blue-200 dark:bg-white/10 dark:text-white dark:border-white/10"
+                               : "text-gray-600 hover:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-neutral-300"
                            }">
-                           <span class="${t === selectedTable ? 'text-blue-500 dark:text-white' : 'text-gray-400 dark:text-neutral-700 group-hover:text-gray-500 dark:group-hover:text-neutral-500'} mr-2 font-mono">#</span>
+                           <span class="${t === selectedTable ? "text-blue-500 dark:text-white" : "text-gray-400 dark:text-neutral-700 group-hover:text-gray-500 dark:group-hover:text-neutral-500"} mr-2 font-mono">#</span>
                            ${t}
                         </a>
-                    `
+                    `,
                       )
-                      .join('')}
+                      .join("")}
                 </nav>
             </div>
             
@@ -160,7 +160,7 @@ export const dbViewer = async (c: Context) => {
                     ${error}
                 </div>
             `
-                : ''
+                : ""
             }
 
             <div class="flex-grow overflow-auto p-0">
@@ -182,9 +182,9 @@ export const dbViewer = async (c: Context) => {
                                     <th class="px-6 py-3 text-[11px] font-semibold text-gray-500 dark:text-neutral-500 uppercase tracking-wider border-b border-gray-200 dark:border-neutral-900 whitespace-nowrap bg-gray-50 dark:bg-black">
                                         ${col}
                                     </th>
-                                `
+                                `,
                                   )
-                                  .join('')}
+                                  .join("")}
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-neutral-900">
@@ -194,37 +194,40 @@ export const dbViewer = async (c: Context) => {
                                 <tr class="hover:bg-gray-50 dark:hover:bg-neutral-900/40 transition-colors group">
                                     ${columns
                                       .map((col) => {
-                                        let val = row[col]
-                                        let displayVal = val
-                                        let isNull = val === null
+                                        let val = row[col];
+                                        let displayVal = val;
+                                        let isNull = val === null;
 
-                                        if (isNull) displayVal = 'null'
-                                        else if (typeof val === 'object')
-                                          displayVal = JSON.stringify(val)
+                                        if (isNull) displayVal = "null";
+                                        else if (typeof val === "object")
+                                          displayVal = JSON.stringify(val);
 
-                                        const isId = col.toLowerCase() === 'id'
-                                        const isDate = col.includes('_at') || col.includes('date')
+                                        const isId = col.toLowerCase() === "id";
+                                        const isDate =
+                                          col.includes("_at") ||
+                                          col.includes("date");
 
-                                        let classes = 'text-gray-700 dark:text-neutral-300'
+                                        let classes =
+                                          "text-gray-700 dark:text-neutral-300";
                                         if (isNull)
                                           classes =
-                                            'text-gray-400 dark:text-neutral-700 italic font-mono text-xs'
+                                            "text-gray-400 dark:text-neutral-700 italic font-mono text-xs";
                                         else if (isId)
                                           classes =
-                                            'font-mono text-blue-600 dark:text-neutral-400 text-[11px]'
+                                            "font-mono text-blue-600 dark:text-neutral-400 text-[11px]";
                                         else if (isDate)
                                           classes =
-                                            'text-gray-500 dark:text-neutral-500 text-xs tabular-nums font-mono'
+                                            "text-gray-500 dark:text-neutral-500 text-xs tabular-nums font-mono";
 
                                         return `<td class="px-6 py-3 text-sm whitespace-nowrap max-w-sm overflow-hidden text-ellipsis border-r border-transparent group-hover:border-gray-100 dark:group-hover:border-neutral-900 last:border-0">
                                             <div class="${classes}">${displayVal}</div>
-                                        </td>`
+                                        </td>`;
                                       })
-                                      .join('')}
+                                      .join("")}
                                 </tr>
-                            `
+                            `,
                               )
-                              .join('')}
+                              .join("")}
                         </tbody>
                     </table>
                     `
@@ -235,5 +238,5 @@ export const dbViewer = async (c: Context) => {
     </div>
 </body>
 </html>
-  `)
-}
+  `);
+};

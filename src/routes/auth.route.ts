@@ -1,8 +1,8 @@
-import { Hono } from 'hono'
-import * as controller from '../controllers/auth.controller'
+import { Hono } from "hono";
+import * as controller from "../controllers/auth.controller";
 
-const router = new Hono()
+const router = new Hono();
 
-router.post('/token', controller.token)
+router.post("/token", controller.token);
 
-export default router
+export default router;

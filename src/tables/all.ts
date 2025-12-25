@@ -6,7 +6,7 @@ export const usersTable = `
     role TEXT DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
-`
+`;
 
 export const apiKeysTable = `
   CREATE TABLE IF NOT EXISTS api_keys (
@@ -19,7 +19,7 @@ export const apiKeysTable = `
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
   )
-`
+`;
 
 export const oauthTokensTable = `
   CREATE TABLE IF NOT EXISTS oauth_tokens (
@@ -32,7 +32,7 @@ export const oauthTokensTable = `
     expires_at DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
-`
+`;
 
 export const itemsTable = `
   CREATE TABLE IF NOT EXISTS items (
@@ -42,12 +42,12 @@ export const itemsTable = `
     image_url TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
-`
+`;
 
 export type ItemRow = {
-  id: string
-  name: string
-  description: string | null
-  image_url: string | null
-  created_at: string
-}
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  created_at: string;
+};
