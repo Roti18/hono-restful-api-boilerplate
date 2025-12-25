@@ -1,0 +1,12 @@
+src/
+tests/
+docs/
+.github/
+.vscode/
+.env
+.env.example
+tsconfig.json
+nodemon.json
+*.log
+coverage/
+node_modules/
