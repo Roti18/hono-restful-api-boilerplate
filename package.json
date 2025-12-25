@@ -1,11 +1,13 @@
 {
-    "name": "hono-secure-api",
+    "name": "@roti18/hono-starterkit",
     "version": "1.0.0",
     "description": "Security-first, high-performance Hono API boilerplate",
     "main": "dist/app.js",
     "types": "dist/app.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "README.md",
+        "LICENSE"
     ],
     "scripts": {
         "dev": "tsx watch src/server.ts",
@@ -35,21 +37,22 @@
         "hono",
         "api",
         "boilerplate",
+        "rest-api",
         "security",
         "typescript",
         "turso",
         "imagekit"
     ],
-    "author": "Your Name <your.email@example.com>",
+    "author": "Roti18",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/username/hono-secure-api.git"
+        "url": "git+https://github.com/Roti18/hono-restful-api-boilerplate.git"
     },
     "bugs": {
-        "url": "https://github.com/username/hono-secure-api/issues"
+        "url": "https://github.com/Roti18/hono-restful-api-boilerplate/issues"
     },
-    "homepage": "https://github.com/username/hono-secure-api#readme",
+    "homepage": "https://github.com/Roti18/hono-restful-api-boilerplate#readme",
     "dependencies": {
         "@hono/node-server": "^1.8.0",
         "@hono/zod-validator": "^0.2.0",
