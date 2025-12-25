@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1766385720866,
+      "tag": "0000_sparkling_mastermind",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1766390933718,
+      "tag": "0001_jittery_reptil",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1766411437615,
+      "tag": "0002_gorgeous_puck",
+      "breakpoints": true
+    }
+  ]
+}
