@@ -1,0 +1,63 @@
+[
+    {
+        "id": "intro",
+        "title": "Introduction",
+        "content": "This API provides a secure, high-performance interface for managing resources. Built with Hono, it adheres to strict RESTful principles and security best practices."
+    },
+    {
+        "id": "auth",
+        "title": "Authentication",
+        "content": "Authenticate requests using either an API Key or Bearer Token.",
+        "endpoints": []
+    },
+    {
+        "id": "items",
+        "title": "Items",
+        "content": "Manage item resources.",
+        "endpoints": [
+            {
+                "method": "GET",
+                "path": "/items",
+                "desc": "List all items",
+                "example": "curl -X GET http://localhost:3000/api/items"
+            },
+            {
+                "method": "POST",
+                "path": "/items",
+                "desc": "Create item",
+                "example": "curl -X POST http://localhost:3000/api/items -d '{\"name\":\"New\"}'"
+            }
+        ]
+    },
+    {
+        "id": "tokens",
+        "title": "Tokens",
+        "content": "OAuth token management.",
+        "endpoints": [
+            {
+                "method": "POST",
+                "path": "/auth/token",
+                "desc": "Request Access Token",
+                "example": "curl -X POST http://localhost:3000/api/auth/token"
+            },
+            {
+                "method": "DELETE",
+                "path": "/auth/token",
+                "desc": "Request Access Token",
+                "example": "curl -X POST http://localhost:3000/api/auth/token"
+            },
+            {
+                "method": "PUT",
+                "path": "/auth/token",
+                "desc": "Request Access Token",
+                "example": "curl -X POST http://localhost:3000/api/auth/token"
+            },
+            {
+                "method": "POST",
+                "path": "/auth/token",
+                "desc": "Request Access Token",
+                "example": "curl -X POST http://localhost:3000/api/auth/token"
+            }
+        ]
+    }
+]
