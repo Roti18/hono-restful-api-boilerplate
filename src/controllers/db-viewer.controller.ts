@@ -75,12 +75,25 @@ export const dbViewer = async (c: Context) => {
                 localStorage.theme = 'dark'
             }
         }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            }
+        }
     </script>
 </head>
 <body class="h-screen flex flex-col antialiased selection:bg-blue-500/20 bg-gray-50 text-gray-900 dark:bg-black dark:text-gray-100 transition-colors duration-200">
     
     <header class="h-16 border-b border-gray-200 dark:border-neutral-900 flex items-center justify-between px-6 bg-white dark:bg-black z-10 transition-colors duration-200">
         <div class="flex items-center gap-4">
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-500 dark:text-gray-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
             <h1 class="font-semibold text-gray-900 dark:text-white tracking-tight">Database Viewer</h1>
             <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-gray-100 text-gray-500 border border-gray-200 dark:bg-neutral-900 dark:text-neutral-400 dark:border-neutral-800">local.db</span>
         </div>
@@ -94,26 +107,28 @@ export const dbViewer = async (c: Context) => {
         </div>
     </header>
 
-    <div class="flex flex-grow overflow-hidden">
+    <div class="flex flex-grow overflow-hidden relative">
         
-        <aside class="w-64 flex-shrink-0 border-r border-gray-200 dark:border-neutral-900 bg-gray-50 dark:bg-black flex flex-col transition-colors duration-200">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="absolute inset-y-0 left-0 z-20 w-64 md:relative transform -translate-x-full md:translate-x-0 transition-transform duration-200 border-r border-gray-200 dark:border-neutral-900 bg-gray-50 dark:bg-black flex flex-col">
             <div class="p-4">
                 <div class="text-[11px] font-bold text-gray-400 dark:text-neutral-600 uppercase tracking-wider mb-3 pl-2">Tables</div>
                 <nav class="space-y-0.5">
                     ${tables
-      .map(
-        (t) => `
+                      .map(
+                        (t) => `
                         <a href="?table=${t}" 
-                           class="flex items-center px-3 py-2 text-sm rounded-md transition-all duration-200 group ${t === selectedTable
-            ? 'bg-blue-50 text-blue-600 border border-blue-200 dark:bg-white/10 dark:text-white dark:border-white/10'
-            : 'text-gray-600 hover:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-neutral-300'
-          }">
+                           class="flex items-center px-3 py-2 text-sm rounded-md transition-all duration-200 group ${
+                             t === selectedTable
+                               ? 'bg-blue-50 text-blue-600 border border-blue-200 dark:bg-white/10 dark:text-white dark:border-white/10'
+                               : 'text-gray-600 hover:bg-gray-200 dark:text-neutral-500 dark:hover:bg-neutral-900 dark:hover:text-neutral-300'
+                           }">
                            <span class="${t === selectedTable ? 'text-blue-500 dark:text-white' : 'text-gray-400 dark:text-neutral-700 group-hover:text-gray-500 dark:group-hover:text-neutral-500'} mr-2 font-mono">#</span>
                            ${t}
                         </a>
                     `
-      )
-      .join('')}
+                      )
+                      .join('')}
                 </nav>
             </div>
             
@@ -121,6 +136,9 @@ export const dbViewer = async (c: Context) => {
                 <div class="text-[10px] text-gray-400 dark:text-neutral-700">Connected to Turso/LibSQL (Local)</div>
             </div>
         </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div onclick="toggleSidebar()" class="md:hidden absolute inset-0 bg-black/50 z-10 hidden transition-opacity" id="overlay"></div>
 
         <main class="flex-grow flex flex-col overflow-hidden bg-white dark:bg-black transition-colors duration-200">
             
@@ -134,81 +152,83 @@ export const dbViewer = async (c: Context) => {
                 </div>
             </div>
 
-            ${error
-      ? `
+            ${
+              error
+                ? `
                 <div class="m-6 p-4 bg-red-50 border border-red-200 text-red-600 dark:bg-red-900/10 dark:border-red-900/30 dark:text-red-400 text-sm rounded-lg flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     ${error}
                 </div>
             `
-      : ''
-    }
+                : ''
+            }
 
             <div class="flex-grow overflow-auto p-0">
-                ${rows.length === 0
-      ? `
+                ${
+                  rows.length === 0
+                    ? `
                     <div class="h-full flex flex-col items-center justify-center text-gray-400 dark:text-neutral-600">
                        <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-neutral-900 flex items-center justify-center mb-4 border border-gray-200 dark:border-neutral-800 font-mono">0</div>
                        <p class="text-sm">No records found</p>
                     </div>
                     `
-      : `
+                    : `
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-gray-50 dark:bg-black sticky top-0 z-10 transition-colors duration-200">
                             <tr>
                                 ${columns
-        .map(
-          (col) => `
+                                  .map(
+                                    (col) => `
                                     <th class="px-6 py-3 text-[11px] font-semibold text-gray-500 dark:text-neutral-500 uppercase tracking-wider border-b border-gray-200 dark:border-neutral-900 whitespace-nowrap bg-gray-50 dark:bg-black">
                                         ${col}
                                     </th>
                                 `
-        )
-        .join('')}
+                                  )
+                                  .join('')}
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-neutral-900">
                             ${rows
-        .map(
-          (row) => `
+                              .map(
+                                (row) => `
                                 <tr class="hover:bg-gray-50 dark:hover:bg-neutral-900/40 transition-colors group">
                                     ${columns
-              .map((col) => {
-                let val = row[col]
-                let displayVal = val
-                let isNull = val === null
+                                      .map((col) => {
+                                        let val = row[col]
+                                        let displayVal = val
+                                        let isNull = val === null
 
-                if (isNull) displayVal = 'null'
-                else if (typeof val === 'object')
-                  displayVal = JSON.stringify(val)
+                                        if (isNull) displayVal = 'null'
+                                        else if (typeof val === 'object')
+                                          displayVal = JSON.stringify(val)
 
-                const isId = col.toLowerCase() === 'id'
-                const isDate = col.includes('_at') || col.includes('date')
+                                        const isId = col.toLowerCase() === 'id'
+                                        const isDate = col.includes('_at') || col.includes('date')
 
-                let classes = 'text-gray-700 dark:text-neutral-300'
-                if (isNull)
-                  classes =
-                    'text-gray-400 dark:text-neutral-700 italic font-mono text-xs'
-                else if (isId)
-                  classes =
-                    'font-mono text-blue-600 dark:text-neutral-400 text-[11px]'
-                else if (isDate)
-                  classes =
-                    'text-gray-500 dark:text-neutral-500 text-xs tabular-nums font-mono'
+                                        let classes = 'text-gray-700 dark:text-neutral-300'
+                                        if (isNull)
+                                          classes =
+                                            'text-gray-400 dark:text-neutral-700 italic font-mono text-xs'
+                                        else if (isId)
+                                          classes =
+                                            'font-mono text-blue-600 dark:text-neutral-400 text-[11px]'
+                                        else if (isDate)
+                                          classes =
+                                            'text-gray-500 dark:text-neutral-500 text-xs tabular-nums font-mono'
 
-                return `<td class="px-6 py-3 text-sm whitespace-nowrap max-w-sm overflow-hidden text-ellipsis border-r border-transparent group-hover:border-gray-100 dark:group-hover:border-neutral-900 last:border-0">
+                                        return `<td class="px-6 py-3 text-sm whitespace-nowrap max-w-sm overflow-hidden text-ellipsis border-r border-transparent group-hover:border-gray-100 dark:group-hover:border-neutral-900 last:border-0">
                                             <div class="${classes}">${displayVal}</div>
                                         </td>`
-              })
-              .join('')}
+                                      })
+                                      .join('')}
                                 </tr>
                             `
-        )
-        .join('')}
+                              )
+                              .join('')}
                         </tbody>
                     </table>
                     `
-    }
+                }
             </div>
 
         </main>
